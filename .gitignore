@@ -38,6 +38,9 @@ local.settings.json
 test/
 *.tmp
 
+# Jupyter
+*.ipynb
+
 # Don't commit credentials or keys
 *.pem
 *.key
