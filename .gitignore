@@ -1,0 +1,62 @@
+# Azure Functions artifacts
+local.settings.json
+.python_packages/
+__pycache__/
+*.pyc
+
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# IDE
+
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+cms_pipeline_test.log
+
+# Local development and testing
+local.settings.json
+test/
+*.tmp
+
+# Don't commit credentials or keys
+*.pem
+*.key
+*.env
+
+# Large data files (stored in Azure Blob Storage)
+*.CSV
+*.csv
+*.ZIP
+*.zip
+cms_master*.csv
+cms_dedupe.csv
+cms_visuals.csv
+geocode_data.csv
+inter_hospital_distances.csv
+need_geocodes.csv
+raw_geocode_calls.csv
+HOSP10*.csv
+HOSP10*.CSV
+*.zip
+hcris_raw/
+hcris_raw_*/

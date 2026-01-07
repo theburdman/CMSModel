@@ -1,0 +1,72 @@
+{
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "triggers": {
+      "Monthly_Schedule": {
+        "type": "Recurrence",
+        "recurrence": {
+          "frequency": "Month",
+          "interval": 1,
+          "schedule": {
+            "monthDays": [1],
+            "hours": [3],
+            "minutes": [0]
+          },
+          "timeZone": "Central Standard Time"
+        }
+      }
+    },
+    "actions": {
+      "Create_Container_Instance": {
+        "type": "Http",
+        "inputs": {
+          "method": "PUT",
+          "uri": "https://management.azure.com/subscriptions/46e2ea4c-f643-4996-bdde-c0da83063906/resourceGroups/RGKorteNext/providers/Microsoft.ContainerInstance/containerGroups/cms-pipeline-@{utcNow('yyyyMMddHHmmss')}?api-version=2023-05-01",
+          "authentication": {
+            "type": "ManagedServiceIdentity"
+          },
+          "body": {
+            "location": "eastus",
+            "properties": {
+              "containers": [
+                {
+                  "name": "cms-pipeline",
+                  "properties": {
+                    "image": "kortenextcontainerregistry.azurecr.io/cms-pipeline:latest",
+                    "resources": {
+                      "requests": {
+                        "cpu": 4,
+                        "memoryInGb": 8
+                      }
+                    },
+                    "environmentVariables": [
+                      {
+                        "name": "AZURE_STORAGE_CONNECTION_STRING",
+                        "secureValue": "<YOUR_AZURE_STORAGE_CONNECTION_STRING>"
+                      },
+                      {
+                        "name": "GOOGLE_API_KEY",
+                        "secureValue": "<YOUR_GOOGLE_API_KEY>"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "osType": "Linux",
+              "restartPolicy": "Never",
+              "imageRegistryCredentials": [
+                {
+                  "server": "kortenextcontainerregistry.azurecr.io",
+                  "username": "KorteNextContainerRegistry",
+                  "password": "<YOUR_REGISTRY_PASSWORD>"
+                }
+              ]
+            }
+          }
+        },
+        "runAfter": {}
+      }
+    }
+  }
+}

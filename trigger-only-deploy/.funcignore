@@ -1,0 +1,15 @@
+.git*
+.vscode
+.venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+local.settings.json
+.DS_Store
+*.csv
+*.zip
+master.py
+master_local.py
+test_local.py

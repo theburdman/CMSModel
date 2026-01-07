@@ -1,0 +1,11 @@
+# Lightweight requirements for container trigger function only
+# This avoids deploying the large ML packages
+
+# Azure Functions
+azure-functions>=1.18.0
+
+# HTTP Requests (for calling Azure API)
+requests>=2.31.0
+
+# Other minimal dependencies
+python-dateutil>=2.8.2

@@ -1,0 +1,9 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "AZURE_STORAGE_CONNECTION_STRING": "DefaultEndpointsProtocol=https;AccountName=cmsdata;AccountKey=YOUR_KEY_HERE;EndpointSuffix=core.windows.net",
+    "GOOGLE_API_KEY": "YOUR_GOOGLE_API_KEY_HERE"
+  }
+}

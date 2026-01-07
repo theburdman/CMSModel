@@ -1,0 +1,84 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2019-05-01",
+      "name": "cms-pipeline-monthly-trigger",
+      "location": "eastus",
+      "properties": {
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "triggers": {
+            "Recurrence": {
+              "type": "Recurrence",
+              "recurrence": {
+                "frequency": "Month",
+                "interval": 1,
+                "schedule": {
+                  "monthDays": [1],
+                  "hours": ["3"],
+                  "minutes": [0]
+                },
+                "timeZone": "Central Standard Time"
+              }
+            }
+          },
+          "actions": {
+            "Create_Container_Instance": {
+              "type": "Http",
+              "inputs": {
+                "method": "PUT",
+                "uri": "https://management.azure.com/subscriptions/@{variables('subscriptionId')}/resourceGroups/RGKorteNext/providers/Microsoft.ContainerInstance/containerGroups/cms-pipeline-@{utcNow('yyyyMMddHHmmss')}?api-version=2023-05-01",
+                "authentication": {
+                  "type": "ManagedServiceIdentity"
+                },
+                "body": {
+                  "location": "eastus",
+                  "properties": {
+                    "containers": [
+                      {
+                        "name": "cms-pipeline",
+                        "properties": {
+                          "image": "kortecmsregistry.azurecr.io/cms-pipeline:latest",
+                          "resources": {
+                            "requests": {
+                              "cpu": 4,
+                              "memoryInGb": 8
+                            }
+                          },
+                          "environmentVariables": [
+                            {
+                              "name": "AZURE_STORAGE_CONNECTION_STRING",
+                              "secureValue": "<YOUR_AZURE_STORAGE_CONNECTION_STRING>"
+                            },
+                            {
+                              "name": "GOOGLE_API_KEY",
+                              "secureValue": "<YOUR_GOOGLE_API_KEY>"
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    "osType": "Linux",
+                    "restartPolicy": "Never",
+                    "imageRegistryCredentials": [
+                      {
+                        "server": "kortecmsregistry.azurecr.io",
+                        "username": "kortecmsregistry",
+                        "password": "<YOUR_REGISTRY_PASSWORD>"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
