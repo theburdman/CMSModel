@@ -448,7 +448,7 @@ def run_cms_pipeline():
 	else:
 		print(f'{len(need_geocodes_df)} CCNs need geocoding. Proceeding with API calls.')
 	
-		GOOGLE_API_KEY = REDACTED_GOOGLE_API_KEY
+		GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 		if not GOOGLE_API_KEY:
 			raise ValueError('GOOGLE_API_KEY environment variable is required for geocoding')
 		GEOCODE_CALLS = 'raw_geocode_calls.csv'
